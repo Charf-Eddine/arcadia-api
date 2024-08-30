@@ -3,9 +3,18 @@ import { DatabaseModule } from './database/database.module';
 import { ServicesModule } from './services/services.module';
 import { BreedsModule } from './breeds/breeds.module';
 import { UsersModule } from './users/users.module';
+import { HabitatsModule } from './habitats/habitats.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [DatabaseModule, ServicesModule, BreedsModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, }),
+    DatabaseModule,
+    ServicesModule,
+    BreedsModule,
+    UsersModule,
+    HabitatsModule
+  ],
   controllers: [],
   providers: [],
 })
