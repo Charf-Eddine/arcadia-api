@@ -7,5 +7,6 @@ import { DatabaseModule } from 'src/database/database.module';
   imports: [DatabaseModule],
   controllers: [HabitatsController],
   providers: [HabitatsService],
+  exports: [HabitatsService],
 })
 export class HabitatsModule { }

@@ -5,6 +5,8 @@ import { BreedsModule } from './breeds/breeds.module';
 import { UsersModule } from './users/users.module';
 import { HabitatsModule } from './habitats/habitats.module';
 import { ConfigModule } from '@nestjs/config';
+import { AnimalsModule } from 'src/animals/animals.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { ConfigModule } from '@nestjs/config';
     ServicesModule,
     BreedsModule,
     UsersModule,
-    HabitatsModule
+    HabitatsModule,
+    AnimalsModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
