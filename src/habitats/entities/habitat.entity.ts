@@ -1,6 +1,8 @@
+import { Animal } from "src/animals/entities/animal.entity";
 import {
     Column,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -14,5 +16,8 @@ export class Habitat {
 
     @Column({ name: "description", type: "text", nullable: false })
     description: string;
+
+    @OneToMany(() => Animal, (animal) => animal.habitat)
+    animals: Animal[];
 
 }
