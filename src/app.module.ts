@@ -21,7 +21,7 @@ import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports
     AnimalsModule,
     FilesModule,
     VisitorReviewsModule,
-    VeterinaryReportsModule,
+    VeterinaryReportsModule
   ],
   controllers: [],
   providers: [],

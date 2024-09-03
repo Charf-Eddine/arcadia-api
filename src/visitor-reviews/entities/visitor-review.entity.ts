@@ -17,4 +17,6 @@ export class VisitorReview {
 
     @Column({ name: "is_visible", nullable: false, default: false })
     isVisible: boolean;
+
 }
+
