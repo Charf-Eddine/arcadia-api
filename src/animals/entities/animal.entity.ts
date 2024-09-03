@@ -2,6 +2,7 @@ import { Breed } from "src/breeds/entities/breed.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AnimalImage } from "./animal-image.entity";
 import { Habitat } from "src/habitats/entities/habitat.entity";
+import { VeterinaryReport } from "src/veterinary-reports/entities/veterinary-report.entity";
 
 @Entity({ name: "animal" })
 export class Animal {
@@ -27,4 +28,7 @@ export class Animal {
 
     @OneToMany(() => AnimalImage, (image) => image.animal, { cascade: true })
     images: AnimalImage[];
+
+    @OneToMany(() => VeterinaryReport, (veterinaryReport) => veterinaryReport.animal)
+    veterinaryReports: VeterinaryReport[];
 }
