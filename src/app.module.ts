@@ -7,6 +7,8 @@ import { HabitatsModule } from './habitats/habitats.module';
 import { ConfigModule } from '@nestjs/config';
 import { AnimalsModule } from 'src/animals/animals.module';
 import { FilesModule } from './files/files.module';
+import { VisitorReviewsModule } from './visitor-reviews/visitor-reviews.module';
+import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { FilesModule } from './files/files.module';
     HabitatsModule,
     AnimalsModule,
     FilesModule,
+    VisitorReviewsModule,
+    VeterinaryReportsModule,
   ],
   controllers: [],
   providers: [],

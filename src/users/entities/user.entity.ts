@@ -1,6 +1,8 @@
+import { VeterinaryReport } from "src/veterinary-reports/entities/veterinary-report.entity";
 import {
     Column,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -28,4 +30,7 @@ export class User {
 
     @Column({ name: "role", type: "enum", enum: ["admin", "employee", "veterinerian"], nullable: false })
     role: UserRoleType;
+
+    @OneToMany(() => VeterinaryReport, (veterinaryReport) => veterinaryReport.user)
+    veterinaryReports: VeterinaryReport[];
 }
