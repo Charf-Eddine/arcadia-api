@@ -18,6 +18,6 @@ async function bootstrap() {
   const uploadsPath = join(__dirname, "..", "uploads");
   app.use("/uploads", express.static(uploadsPath));
 
-  await app.listen(3001);
+  await app.listen(3002);
 }
 bootstrap();

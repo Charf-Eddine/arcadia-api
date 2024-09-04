@@ -8,9 +8,8 @@ export class CreateServiceDto {
     @Length(0, 50)
     name: string;
 
-    @ApiProperty({ maxLength: 255, description: "Description du service" })
+    @ApiProperty({ description: "Description du service" })
     @IsNotEmpty()
     @IsString()
-    @Length(0, 255)
     description: string;
 }
