@@ -10,6 +10,7 @@ import { FilesModule } from './files/files.module';
 import { VisitorReviewsModule } from './visitor-reviews/visitor-reviews.module';
 import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports.module';
 import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
+import { VeterinaryReviewsModule } from './veterinary-reviews/veterinary-reviews.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
     FilesModule,
     VisitorReviewsModule,
     VeterinaryReportsModule,
-    DailyFeedsModule
+    DailyFeedsModule,
+    VeterinaryReviewsModule
   ],
   controllers: [],
   providers: [],

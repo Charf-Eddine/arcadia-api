@@ -25,7 +25,7 @@ export class VeterinaryReportsController {
   @ApiOkResponse({ description: "Reports successfully retrieved.", type: [VeterinaryReport] })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Get()
-  findAll() {
+  findAll(): Promise<VeterinaryReport[]> {
     return this.veterinaryReportsService.findAll();
   }
 
@@ -42,7 +42,7 @@ export class VeterinaryReportsController {
   @ApiBadRequestResponse({ description: "Param is wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<VeterinaryReport> {
     return this.veterinaryReportsService.findOne(+id);
   }
 
@@ -54,7 +54,7 @@ export class VeterinaryReportsController {
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVeterinaryReportDto: UpdateVeterinaryReportDto) {
+  update(@Param('id') id: string, @Body() updateVeterinaryReportDto: UpdateVeterinaryReportDto): Promise<VeterinaryReport> {
     return this.veterinaryReportsService.update(+id, updateVeterinaryReportDto);
   }
 
