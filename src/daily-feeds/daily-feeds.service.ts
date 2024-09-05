@@ -31,18 +31,6 @@ export class DailyFeedsService {
       .getMany();
   }
 
-  async findByAnimal(animalId: number): Promise<DailyFeed[]> {
-    return await this.dataSource
-      .getRepository(DailyFeed)
-      .createQueryBuilder('dailyFeed')
-      .leftJoin("dailyFeed.user", "user")
-      .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("dailyFeed.animal", "animal")
-      .addSelect(["animal.id", "animal.name"])
-      .where("dailyFeed.animalId = :animalId", { animalId: animalId })
-      .getMany();
-  }
-
   async findOne(id: number): Promise<DailyFeed> {
     return await this.dataSource
       .getRepository(DailyFeed)
