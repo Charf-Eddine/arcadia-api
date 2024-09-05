@@ -1,3 +1,4 @@
+import { DailyFeed } from "src/daily-feeds/entities/daily-feed.entity";
 import { VeterinaryReport } from "src/veterinary-reports/entities/veterinary-report.entity";
 import {
     Column,
@@ -33,4 +34,7 @@ export class User {
 
     @OneToMany(() => VeterinaryReport, (veterinaryReport) => veterinaryReport.user)
     veterinaryReports: VeterinaryReport[];
+
+    @OneToMany(() => DailyFeed, (dailyFeed) => dailyFeed.user)
+    dailyFeeds: DailyFeed[];
 }

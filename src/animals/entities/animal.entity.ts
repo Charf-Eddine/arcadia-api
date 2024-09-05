@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { AnimalImage } from "./animal-image.entity";
 import { Habitat } from "src/habitats/entities/habitat.entity";
 import { VeterinaryReport } from "src/veterinary-reports/entities/veterinary-report.entity";
+import { DailyFeed } from "src/daily-feeds/entities/daily-feed.entity";
 
 @Entity({ name: "animal" })
 export class Animal {
@@ -31,4 +32,7 @@ export class Animal {
 
     @OneToMany(() => VeterinaryReport, (veterinaryReport) => veterinaryReport.animal)
     veterinaryReports: VeterinaryReport[];
+
+    @OneToMany(() => DailyFeed, (dailyFeed) => dailyFeed.animal)
+    dailyFeeds: DailyFeed[];
 }
