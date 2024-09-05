@@ -9,6 +9,7 @@ import { AnimalsModule } from 'src/animals/animals.module';
 import { FilesModule } from './files/files.module';
 import { VisitorReviewsModule } from './visitor-reviews/visitor-reviews.module';
 import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports.module';
+import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports
     AnimalsModule,
     FilesModule,
     VisitorReviewsModule,
-    VeterinaryReportsModule
+    VeterinaryReportsModule,
+    DailyFeedsModule
   ],
   controllers: [],
   providers: [],

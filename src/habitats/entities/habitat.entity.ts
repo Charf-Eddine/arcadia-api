@@ -5,6 +5,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
+import { HabitatImage } from "./habitat-image.entity";
 
 @Entity({ name: "habitat" })
 export class Habitat {
@@ -19,5 +20,10 @@ export class Habitat {
 
     @OneToMany(() => Animal, (animal) => animal.habitat)
     animals: Animal[];
+
+
+    @OneToMany(() => HabitatImage, (image) => image.habitat, { cascade: true })
+    images: HabitatImage[];
+
 
 }
