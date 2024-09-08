@@ -11,6 +11,7 @@ import { VisitorReviewsModule } from './visitor-reviews/visitor-reviews.module';
 import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports.module';
 import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
 import { VeterinaryReviewsModule } from './veterinary-reviews/veterinary-reviews.module';
+import { SchedulesModule } from './schedules/schedules.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { VeterinaryReviewsModule } from './veterinary-reviews/veterinary-reviews
     VisitorReviewsModule,
     VeterinaryReportsModule,
     DailyFeedsModule,
-    VeterinaryReviewsModule
+    VeterinaryReviewsModule,
+    SchedulesModule
   ],
   controllers: [],
   providers: [],
