@@ -12,6 +12,7 @@ import { VeterinaryReportsModule } from './veterinary-reports/veterinary-reports
 import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
 import { VeterinaryReviewsModule } from './veterinary-reviews/veterinary-reviews.module';
 import { SchedulesModule } from './schedules/schedules.module';
+import { MailingModule } from './mailing/mailing.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { SchedulesModule } from './schedules/schedules.module';
     VeterinaryReportsModule,
     DailyFeedsModule,
     VeterinaryReviewsModule,
-    SchedulesModule
+    SchedulesModule,
+    MailingModule
   ],
   controllers: [],
   providers: [],
