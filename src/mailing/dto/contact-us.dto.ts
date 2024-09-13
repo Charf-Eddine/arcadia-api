@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
 
-export class ContactZooDto {
+export class ContactUsDto {
   @ApiProperty()
   @IsString()
   @IsEmail()
