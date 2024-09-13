@@ -15,9 +15,6 @@ export class User {
     @PrimaryGeneratedColumn({ name: "id" })
     id: number;
 
-    @Column({ name: "username", type: "varchar", length: 50, nullable: false })
-    username: string;
-
     @Column({ name: "password", type: "varchar", length: 50, nullable: false })
     password: string;
 
