@@ -27,11 +27,19 @@ export class UsersService {
       .getMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<User> {
     return await this.dataSource
       .getRepository(User)
       .createQueryBuilder('user')
       .where("user.id = :id", { id: id })
+      .getOne();
+  }
+  
+  async findOneByEmail(email: string): Promise<User> {
+    return await this.dataSource
+      .getRepository(User)
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: email })
       .getOne();
   }
 
