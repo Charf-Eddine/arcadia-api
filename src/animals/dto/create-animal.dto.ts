@@ -9,17 +9,17 @@ export class CreateAnimalDto {
     name: string;
 
     @ApiProperty({ description: "ID de la race de l'animal", type: 'number' })
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    breedId: number;
-
+    breedId: string;
+    
     @ApiProperty({ description: "ID de l'habitat de l'animal", type: 'number' })
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    habitatId: number;
+    habitatId: string;
 
     @ApiProperty({ description: "Liste des images de l'animal", type: 'array', items: { type: 'string', format: 'binary' } })
-    @IsArray()
+//    @IsArray()
     @IsOptional()
     images: any[];
 }
