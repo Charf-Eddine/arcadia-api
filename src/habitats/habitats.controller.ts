@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { HabitatsService } from './habitats.service';
 import { CreateHabitatDto } from './dto/create-habitat.dto';
 import { UpdateHabitatDto } from './dto/update-habitat.dto';
@@ -9,31 +9,29 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 @ApiTags("Habitats")
 @Controller('habitats')
 export class HabitatsController {
-  constructor(private readonly habitatsService: HabitatsService) { }
+  constructor(private readonly habitatsService: HabitatsService) {}
 
   @ApiOperation({ summary: 'Créer un nouveau habitat' })
   @ApiCreatedResponse({
     description: "Habitat successfully created.",
     type: Habitat,
-  })
+  })  
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'images', maxCount: 10 }
-  ]))
-
-
+  ]))  
   @Post()
   create(
     @UploadedFiles() files: { images?: Express.Multer.File[] },
     @Body() createHabitatDto: CreateHabitatDto
   ): Promise<Habitat> {
-    const imagesData = files.images?.map(file => {
-      return {
+    const imagesData = files && files.images ? files.images?.map(file => {
+      return { 
         originalname: file.originalname,
         buffer: file.buffer,
         mimetype: file.mimetype
       };
-    }) || [];
+    }) : [];
 
     return this.habitatsService.create({
       ...createHabitatDto,
@@ -42,19 +40,17 @@ export class HabitatsController {
   }
 
   @ApiOperation({ summary: 'Récupérer la liste des habitats' })
-  @ApiOkResponse({ description: "habitat successfully retrieved.", type: [Habitat] })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
-
+  @ApiOkResponse({ description: "Habitats successfully retrieved.", type: [Habitat] })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get()
   findAll(): Promise<Habitat[]> {
     return this.habitatsService.findAll();
   }
 
-  @ApiOperation({ summary: 'Récupérer la liste des habitats' })
-  @ApiOkResponse({ description: "Habitat successfully retrieved.", type: Habitat })
+  @ApiOperation({ summary: 'Récupérer un habitat par son ID' })
+  @ApiOkResponse({ description: "habitat successfully retrieved.", type: Habitat })
   @ApiBadRequestResponse({ description: "Param is wrong." })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
-
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Habitat> {
     return this.habitatsService.findOne(+id);
@@ -71,20 +67,19 @@ export class HabitatsController {
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'images', maxCount: 10 }
   ]))
-
   @Patch(':id')
   update(
     @Param('id') id: string,
     @UploadedFiles() files: { images?: Express.Multer.File[] },
     @Body() updateHabitatDto: UpdateHabitatDto
   ): Promise<Habitat> {
-    const imagesData = files.images?.map(file => {
-      return {
+    const imagesData = files && files.images ? files.images?.map(file => {
+      return { 
         originalname: file.originalname,
         buffer: file.buffer,
         mimetype: file.mimetype
       };
-    }) || [];
+    }) : [];
 
     return this.habitatsService.update(+id, {
       ...updateHabitatDto,
@@ -95,8 +90,7 @@ export class HabitatsController {
   @ApiOperation({ summary: 'Supprimer un habitat par son ID' })
   @ApiOkResponse({ description: "Habitat successfully deleted." })
   @ApiBadRequestResponse({ description: "Params are wrong." })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
-
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.habitatsService.remove(+id);
