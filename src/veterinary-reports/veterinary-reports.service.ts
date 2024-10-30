@@ -9,15 +9,15 @@ export class VeterinaryReportsService {
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
-  ) { }
-
+  ) {}
+  
   async create(createVeterinaryReportDto: CreateVeterinaryReportDto): Promise<InsertResult> {
     return await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(VeterinaryReport)
-      .values(createVeterinaryReportDto)
-      .execute();
+    .createQueryBuilder()
+    .insert()
+    .into(VeterinaryReport)
+    .values(createVeterinaryReportDto)
+    .execute();
   }
 
   async findAll(): Promise<VeterinaryReport[]> {
@@ -28,6 +28,7 @@ export class VeterinaryReportsService {
       .addSelect(["user.id", "user.firstname", "user.lastname"])
       .leftJoin("veterinaryReport.animal", "animal")
       .addSelect(["animal.id", "animal.name"])
+      .orderBy("veterinaryReport.passageDate", "DESC")
       .getMany();
   }
 
@@ -57,12 +58,12 @@ export class VeterinaryReportsService {
 
   async update(id: number, updateVeterinaryReportDto: UpdateVeterinaryReportDto): Promise<VeterinaryReport> {
     await this.dataSource
-      .createQueryBuilder()
-      .update(VeterinaryReport)
-      .set(updateVeterinaryReportDto)
-      .where("id = :id", { id: id })
-      .execute();
-    return this.findOne(id);
+    .createQueryBuilder()
+    .update(VeterinaryReport)
+    .set(updateVeterinaryReportDto)
+    .where("id = :id", { id: id })
+    .execute();
+    return  this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
