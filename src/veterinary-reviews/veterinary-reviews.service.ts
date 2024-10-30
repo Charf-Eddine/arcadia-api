@@ -9,25 +9,26 @@ export class VeterinaryReviewsService {
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
-  ) { }
-
+  ) {}
+  
   async create(createVeterinaryReviewDto: CreateVeterinaryReviewDto): Promise<InsertResult> {
     return await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(VeterinaryReview)
-      .values(createVeterinaryReviewDto)
-      .execute();
+    .createQueryBuilder()
+    .insert()
+    .into(VeterinaryReview)
+    .values(createVeterinaryReviewDto)
+    .execute();
   }
 
   async findAll(): Promise<VeterinaryReview[]> {
     return await this.dataSource
       .getRepository(VeterinaryReview)
-      .createQueryBuilder('veterinaryReport')
-      .leftJoin("veterinaryReport.user", "user")
+      .createQueryBuilder('veterinaryReview')
+      .leftJoin("veterinaryReview.user", "user")
       .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("veterinaryReport.habitat", "habitat")
+      .leftJoin("veterinaryReview.habitat", "habitat")
       .addSelect(["habitat.id", "habitat.name"])
+      .orderBy("veterinaryReview.date", "DESC")
       .getMany();
   }
 
@@ -45,12 +46,12 @@ export class VeterinaryReviewsService {
 
   async update(id: number, updateVeterinaryReviewDto: UpdateVeterinaryReviewDto): Promise<VeterinaryReview> {
     await this.dataSource
-      .createQueryBuilder()
-      .update(VeterinaryReview)
-      .set(updateVeterinaryReviewDto)
-      .where("id = :id", { id: id })
-      .execute();
-    return this.findOne(id);
+    .createQueryBuilder()
+    .update(VeterinaryReview)
+    .set(updateVeterinaryReviewDto)
+    .where("id = :id", { id: id })
+    .execute();
+    return  this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
