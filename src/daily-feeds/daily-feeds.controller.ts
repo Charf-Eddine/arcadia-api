@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { DailyFeedsService } from './daily-feeds.service';
 import { CreateDailyFeedDto } from './dto/create-daily-feed.dto';
 import { UpdateDailyFeedDto } from './dto/update-daily-feed.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InsertResult } from 'typeorm';
 import { DailyFeed } from './entities/daily-feed.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags("Daily feeds")
 @Controller('daily-feeds')
 export class DailyFeedsController {

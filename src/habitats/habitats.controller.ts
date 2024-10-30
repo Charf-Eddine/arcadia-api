@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UseGuards } from '@nestjs/common';
 import { HabitatsService } from './habitats.service';
 import { CreateHabitatDto } from './dto/create-habitat.dto';
 import { UpdateHabitatDto } from './dto/update-habitat.dto';
-import { ApiBadRequestResponse, ApiConsumes, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Habitat } from './entities/habitat.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags("Habitats")
 @Controller('habitats')
@@ -15,11 +16,13 @@ export class HabitatsController {
   @ApiCreatedResponse({
     description: "Habitat successfully created.",
     type: Habitat,
-  })  
+  }) 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard) 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'images', maxCount: 10 }
-  ]))  
+  ]))
   @Post()
   create(
     @UploadedFiles() files: { images?: Express.Multer.File[] },
@@ -63,6 +66,8 @@ export class HabitatsController {
   })
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'images', maxCount: 10 }
@@ -90,7 +95,9 @@ export class HabitatsController {
   @ApiOperation({ summary: 'Supprimer un habitat par son ID' })
   @ApiOkResponse({ description: "Habitat successfully deleted." })
   @ApiBadRequestResponse({ description: "Params are wrong." })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })  
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard) 
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.habitatsService.remove(+id);

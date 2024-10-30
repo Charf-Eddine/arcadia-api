@@ -12,12 +12,13 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    return await this.dataSource
+    const result = await this.dataSource
       .createQueryBuilder()
       .insert()
       .into(User)
       .values(createUserDto)
       .execute();
+    return result.identifiers[0].id;
   }
 
   async findAll() {
