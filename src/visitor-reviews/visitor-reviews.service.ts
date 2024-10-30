@@ -8,22 +8,23 @@ export class VisitorReviewsService {
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
-  ) { }
-
+  ) {}
+  
   async create(createVisitorReviewDto: CreateVisitorReviewDto) {
     createVisitorReviewDto.isVisible = false;
     return await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(VisitorReview)
-      .values(createVisitorReviewDto)
-      .execute();
+    .createQueryBuilder()
+    .insert()
+    .into(VisitorReview)
+    .values(createVisitorReviewDto)
+    .execute();
   }
 
   async findAll(): Promise<VisitorReview[]> {
     return await this.dataSource
       .getRepository(VisitorReview)
       .createQueryBuilder('visitorReview')
+      .orderBy("visitorReview.date", "DESC")
       .getMany();
   }
 
@@ -32,6 +33,7 @@ export class VisitorReviewsService {
       .getRepository(VisitorReview)
       .createQueryBuilder('visitorReview')
       .where("visitorReview.isVisible = :isVisible", { isVisible: true })
+      .orderBy("visitorReview.date", "DESC")
       .getMany();
   }
 
@@ -43,25 +45,25 @@ export class VisitorReviewsService {
       .getOne();
   }
 
-  async acceptReview(id: number): Promise<void> {
+  async acceptReview(id: number) : Promise<void> {
     await this.dataSource
-      .createQueryBuilder()
-      .update(VisitorReview)
-      .set({
-        isVisible: true
-      })
-      .where("id = :id", { id: id })
-      .execute();
+    .createQueryBuilder()
+    .update(VisitorReview)
+    .set({
+      isVisible: true
+    })
+    .where("id = :id", { id: id })
+    .execute();
   }
 
-  async rejectReview(id: number): Promise<void> {
+  async rejectReview(id: number) : Promise<void> {
     await this.dataSource
-      .createQueryBuilder()
-      .update(VisitorReview)
-      .set({
-        isVisible: false
-      })
-      .where("id = :id", { id: id })
-      .execute();
+    .createQueryBuilder()
+    .update(VisitorReview)
+    .set({
+      isVisible: false
+    })
+    .where("id = :id", { id: id })
+    .execute();
   }
 }
