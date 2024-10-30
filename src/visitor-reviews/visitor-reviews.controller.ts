@@ -16,8 +16,6 @@ export class VisitorReviewsController {
     description: "Review successfully created.",
     type: InsertResult,
   })
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createVisitorReviewDto: CreateVisitorReviewDto): Promise<InsertResult> {
     return this.visitorReviewsService.create(createVisitorReviewDto);
