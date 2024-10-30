@@ -20,28 +20,24 @@ export class VeterinaryReportsService {
     .execute();
   }
 
-  async findAll(): Promise<VeterinaryReport[]> {
-    return await this.dataSource
+  async find(filters : any = null): Promise<VeterinaryReport[]> {
+    let qb = this.dataSource
       .getRepository(VeterinaryReport)
       .createQueryBuilder('veterinaryReport')
       .leftJoin("veterinaryReport.user", "user")
       .addSelect(["user.id", "user.firstname", "user.lastname"])
       .leftJoin("veterinaryReport.animal", "animal")
       .addSelect(["animal.id", "animal.name"])
-      .orderBy("veterinaryReport.passageDate", "DESC")
-      .getMany();
-  }
 
-  async findByAnimal(animalId: number): Promise<VeterinaryReport[]> {
-    return await this.dataSource
-      .getRepository(VeterinaryReport)
-      .createQueryBuilder('veterinaryReport')
-      .leftJoin("veterinaryReport.user", "user")
-      .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("veterinaryReport.animal", "animal")
-      .addSelect(["animal.id", "animal.name"])
-      .where("veterinaryReport.animalId = :animalId", { animalId: animalId })
-      .getMany();
+      if (filters && filters.animalId) {
+        qb.where("veterinaryReport.animalId = :animalId", { animalId: filters.animalId })
+      }
+
+      if (filters && filters.userId) {
+        qb.where("veterinaryReport.userId = :userId", { userId: filters.userId })
+      }
+
+      return await qb.orderBy("veterinaryReport.passageDate", "DESC").getMany();
   }
 
   async findOne(id: number): Promise<VeterinaryReport> {

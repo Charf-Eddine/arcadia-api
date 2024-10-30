@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
 import { VeterinaryReviewsService } from './veterinary-reviews.service';
 import { CreateVeterinaryReviewDto } from './dto/create-veterinary-review.dto';
 import { UpdateVeterinaryReviewDto } from './dto/update-veterinary-review.dto';
@@ -6,13 +6,18 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalSe
 import { InsertResult } from 'typeorm';
 import { VeterinaryReview } from './entities/veterinary-review.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from 'src/auth/constants';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @ApiTags("Veterinary reviews")
 @Controller('veterinary-reviews')
 export class VeterinaryReviewsController {
-  constructor(private readonly veterinaryReviewsService: VeterinaryReviewsService) {}
+  constructor(
+    private readonly veterinaryReviewsService: VeterinaryReviewsService,
+    private readonly jwtService: JwtService
+  ) {}
 
   @ApiOperation({ summary: 'Créer un avis du vétérinaire' })
   @ApiCreatedResponse({
@@ -29,7 +34,26 @@ export class VeterinaryReviewsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })   
   @Get()
   findAll(): Promise<VeterinaryReview[]> {
-    return this.veterinaryReviewsService.findAll();
+    return this.veterinaryReviewsService.find();
+  }
+
+  @ApiOperation({ summary: 'Récupérer la liste des avis du vétérinaire' })
+  @ApiOkResponse({ description: "Reviews successfully retrieved.", type: [VeterinaryReview] })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })   
+  @Get('find-by-user')
+  async findByUser(@Req() request): Promise<VeterinaryReview[]> {
+    const authorizationHeader = request.headers.authorization;
+
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+      throw new UnauthorizedException("Invalid or missing Bearer token");
+    }
+    const token = authorizationHeader.split(" ")[1];
+    const decodedToken = await this.jwtService.verify(token, {
+      secret: jwtConstants.secret,
+    });
+    const userId = decodedToken.sub;
+
+    return this.veterinaryReviewsService.find({userId: userId});
   }
 
   @ApiOperation({ summary: 'Récupérer un avis du vétérinaire par son ID' })

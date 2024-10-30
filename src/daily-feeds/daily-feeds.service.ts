@@ -20,16 +20,20 @@ export class DailyFeedsService {
     .execute();
   }
 
-  async findAll(): Promise<DailyFeed[]> {
-    return await this.dataSource
-      .getRepository(DailyFeed)
-      .createQueryBuilder('dailyFeed')
-      .leftJoin("dailyFeed.user", "user")
-      .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("dailyFeed.animal", "animal")
-      .addSelect(["animal.id", "animal.name"])
-      .orderBy("dailyFeed.passageDate", "DESC")
-      .getMany();
+  async find(filters : any = null): Promise<DailyFeed[]> {
+    let qb = this.dataSource
+    .getRepository(DailyFeed)
+    .createQueryBuilder('dailyFeed')
+    .leftJoin("dailyFeed.user", "user")
+    .addSelect(["user.id", "user.firstname", "user.lastname"])
+    .leftJoin("dailyFeed.animal", "animal")
+    .addSelect(["animal.id", "animal.name"])
+
+    if (filters && filters.userId) {
+      qb.where("dailyFeed.userId = :userId", { userId: filters.userId })
+    }
+
+    return await qb.orderBy("dailyFeed.passageDate", "DESC").getMany();
   }
 
   async findOne(id: number): Promise<DailyFeed> {

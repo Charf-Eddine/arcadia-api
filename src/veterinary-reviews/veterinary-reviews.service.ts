@@ -20,7 +20,23 @@ export class VeterinaryReviewsService {
     .execute();
   }
 
-  async findAll(): Promise<VeterinaryReview[]> {
+  async find(filters : any = null): Promise<VeterinaryReview[]> {
+    let qb = this.dataSource
+      .getRepository(VeterinaryReview)
+      .createQueryBuilder('veterinaryReview')
+      .leftJoin("veterinaryReview.user", "user")
+      .addSelect(["user.id", "user.firstname", "user.lastname"])
+      .leftJoin("veterinaryReview.habitat", "habitat")
+      .addSelect(["habitat.id", "habitat.name"])
+
+      if (filters && filters.userId) {
+        qb.where("veterinaryReview.userId = :userId", { userId: filters.userId })
+      }
+
+      return await qb.orderBy("veterinaryReview.date", "DESC").getMany();
+  }
+
+  async findOne(id: number): Promise<VeterinaryReview> {
     return await this.dataSource
       .getRepository(VeterinaryReview)
       .createQueryBuilder('veterinaryReview')
@@ -28,19 +44,7 @@ export class VeterinaryReviewsService {
       .addSelect(["user.id", "user.firstname", "user.lastname"])
       .leftJoin("veterinaryReview.habitat", "habitat")
       .addSelect(["habitat.id", "habitat.name"])
-      .orderBy("veterinaryReview.date", "DESC")
-      .getMany();
-  }
-
-  async findOne(id: number): Promise<VeterinaryReview> {
-    return await this.dataSource
-      .getRepository(VeterinaryReview)
-      .createQueryBuilder('veterinaryReport')
-      .leftJoin("veterinaryReport.user", "user")
-      .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("veterinaryReport.habitat", "habitat")
-      .addSelect(["habitat.id", "habitat.name"])
-      .where("veterinaryReport.id = :id", { id: id })
+      .where("veterinaryReview.id = :id", { id: id })
       .getOne();
   }
 
