@@ -3,23 +3,22 @@ import { CreateHabitatDto } from './dto/create-habitat.dto';
 import { UpdateHabitatDto } from './dto/update-habitat.dto';
 import { DataSource } from 'typeorm';
 import { Habitat } from './entities/habitat.entity';
-import { FilesService } from 'src/files/files.service';
-import * as fs from 'fs';
 import { HabitatImage } from './entities/habitat-image.entity';
+import * as fs from 'fs';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class HabitatsService {
-
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
     private filesService: FilesService,
-  ) { }
-
+  ) {}
+  
   async create(createHabitatDto: CreateHabitatDto): Promise<Habitat> {
     let filenames = [];
     if (createHabitatDto.images && createHabitatDto.images.length > 0) {
-      for (let image of createHabitatDto.images) {
+      for(let image of createHabitatDto.images) {
         filenames.push(await this.filesService.uploadImage(image));
       }
     }
@@ -28,7 +27,7 @@ export class HabitatsService {
       name: createHabitatDto.name,
       description: createHabitatDto.description,
       images: filenames.map(filename => {
-        return this.dataSource.getRepository(HabitatImage).create({
+        return this.dataSource.getRepository(HabitatImage).create({ 
           filename: filename
         });
       }),
@@ -42,6 +41,8 @@ export class HabitatsService {
       .getRepository(Habitat)
       .createQueryBuilder('habitat')
       .leftJoinAndSelect('habitat.images', 'images')
+      .leftJoin('habitat.animals', 'animals')
+      .addSelect(["animals.id", "animals.name"])
       .getMany();
   }
 
@@ -50,6 +51,7 @@ export class HabitatsService {
       .getRepository(Habitat)
       .createQueryBuilder('habitat')
       .leftJoinAndSelect('habitat.images', 'images')
+      .leftJoinAndSelect('habitat.animals', 'animals')
       .where("habitat.id = :id", { id: id })
       .getOne();
   }
@@ -60,10 +62,10 @@ export class HabitatsService {
     if (!habitat) {
       throw new Error('Habitat not found');
     }
-
+  
     // Mettre à jour les propriétés de l'habitat
     this.dataSource.getRepository(Habitat).merge(habitat, updateHabitatDto);
-
+  
     // Supprimer les anciennes images
     if (habitat.images && habitat.images.length > 0) {
       for (let image of habitat.images) {
@@ -72,28 +74,28 @@ export class HabitatsService {
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
           }
-          this.dataSource.getRepository(HabitatImage).remove(image);
+          this.dataSource.getRepository(HabitatImage).remove(image);  
         }
       }
     }
 
     // Ajouter les nouvelles images
-    if (updateHabitatDto.images && updateHabitatDto.images.length > 0) {
+    if (updateHabitatDto.images  && updateHabitatDto.images.length > 0) {  
       let filenames = [];
       if (updateHabitatDto.images && updateHabitatDto.images.length > 0) {
-        for (let image of updateHabitatDto.images) {
+        for(let image of updateHabitatDto.images) {
           filenames.push(await this.filesService.uploadImage(image));
         }
       }
-
+  
       habitat.images = filenames.map(filename => {
-        return this.dataSource.getRepository(HabitatImage).create({
+        return this.dataSource.getRepository(HabitatImage).create({ 
           filename: filename
         });
       });
     }
+  
     return this.dataSource.getRepository(Habitat).save(habitat);
-
   }
 
   async remove(id: number): Promise<void> {

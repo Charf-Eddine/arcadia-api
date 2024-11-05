@@ -13,6 +13,7 @@ import { DailyFeedsModule } from './daily-feeds/daily-feeds.module';
 import { VeterinaryReviewsModule } from './veterinary-reviews/veterinary-reviews.module';
 import { SchedulesModule } from './schedules/schedules.module';
 import { MailingModule } from './mailing/mailing.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { MailingModule } from './mailing/mailing.module';
     DailyFeedsModule,
     VeterinaryReviewsModule,
     SchedulesModule,
-    MailingModule
+    MailingModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],

@@ -12,12 +12,13 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    return await this.dataSource
+    const result = await this.dataSource
       .createQueryBuilder()
       .insert()
       .into(User)
       .values(createUserDto)
       .execute();
+    return result.identifiers[0].id;
   }
 
   async findAll() {
@@ -27,11 +28,19 @@ export class UsersService {
       .getMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<User> {
     return await this.dataSource
       .getRepository(User)
       .createQueryBuilder('user')
       .where("user.id = :id", { id: id })
+      .getOne();
+  }
+  
+  async findOneByEmail(email: string): Promise<User> {
+    return await this.dataSource
+      .getRepository(User)
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: email })
       .getOne();
   }
 

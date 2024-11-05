@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Param, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpCode, UseGuards } from '@nestjs/common';
 import { VisitorReviewsService } from './visitor-reviews.service';
 import { CreateVisitorReviewDto } from './dto/create-visitor-review.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InsertResult } from 'typeorm';
 import { VisitorReview } from './entities/visitor-review.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags("Visitor reviews")
 @Controller('visitor-reviews')
 export class VisitorReviewsController {
-  constructor(private readonly visitorReviewsService: VisitorReviewsService) { }
+  constructor(private readonly visitorReviewsService: VisitorReviewsService) {}
 
   @ApiOperation({ summary: 'Créer un avis visiteur' })
   @ApiCreatedResponse({
@@ -22,7 +23,9 @@ export class VisitorReviewsController {
 
   @ApiOperation({ summary: 'Récupérer la liste de tous les avis visiteurs' })
   @ApiOkResponse({ description: "Reviews successfully retrieved.", type: [VisitorReview] })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })    
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Promise<VisitorReview[]> {
     return this.visitorReviewsService.findAll();
@@ -30,7 +33,7 @@ export class VisitorReviewsController {
 
   @ApiOperation({ summary: 'Récupérer la liste des avis visiteurs acceptés' })
   @ApiOkResponse({ description: "Reviews successfully retrieved.", type: [VisitorReview] })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })    
   @Get('list/accepted')
   findAcceptedReviews(): Promise<VisitorReview[]> {
     return this.visitorReviewsService.findAcceptedReviews();
@@ -39,7 +42,9 @@ export class VisitorReviewsController {
   @ApiOperation({ summary: 'Récupérer un avis visiteur par son ID' })
   @ApiOkResponse({ description: "Review successfully retrieved.", type: VisitorReview })
   @ApiBadRequestResponse({ description: "Param is wrong." })
-  @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })  
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<VisitorReview> {
     return this.visitorReviewsService.findOne(+id);
@@ -51,6 +56,8 @@ export class VisitorReviewsController {
   })
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post('accept-review/:id')
   @HttpCode(200)
   acceptReview(@Param('id') id: string): Promise<void> {
@@ -63,6 +70,8 @@ export class VisitorReviewsController {
   })
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post('reject-review/:id')
   @HttpCode(200)
   rejectReview(@Param('id') id: string): Promise<void> {

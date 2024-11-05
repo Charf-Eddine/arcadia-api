@@ -9,26 +9,31 @@ export class DailyFeedsService {
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
-  ) { }
-
+  ) {}
+  
   async create(createDailyFeedDto: CreateDailyFeedDto): Promise<InsertResult> {
     return await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(DailyFeed)
-      .values(createDailyFeedDto)
-      .execute();
+    .createQueryBuilder()
+    .insert()
+    .into(DailyFeed)
+    .values(createDailyFeedDto)
+    .execute();
   }
 
-  async findAll(): Promise<DailyFeed[]> {
-    return await this.dataSource
-      .getRepository(DailyFeed)
-      .createQueryBuilder('dailyFeed')
-      .leftJoin("dailyFeed.user", "user")
-      .addSelect(["user.id", "user.firstname", "user.lastname"])
-      .leftJoin("dailyFeed.animal", "animal")
-      .addSelect(["animal.id", "animal.name"])
-      .getMany();
+  async find(filters : any = null): Promise<DailyFeed[]> {
+    let qb = this.dataSource
+    .getRepository(DailyFeed)
+    .createQueryBuilder('dailyFeed')
+    .leftJoin("dailyFeed.user", "user")
+    .addSelect(["user.id", "user.firstname", "user.lastname"])
+    .leftJoin("dailyFeed.animal", "animal")
+    .addSelect(["animal.id", "animal.name"])
+
+    if (filters && filters.userId) {
+      qb.where("dailyFeed.userId = :userId", { userId: filters.userId })
+    }
+
+    return await qb.orderBy("dailyFeed.passageDate", "DESC").getMany();
   }
 
   async findOne(id: number): Promise<DailyFeed> {
@@ -45,12 +50,12 @@ export class DailyFeedsService {
 
   async update(id: number, updateDailyFeedDto: UpdateDailyFeedDto): Promise<DailyFeed> {
     await this.dataSource
-      .createQueryBuilder()
-      .update(DailyFeed)
-      .set(updateDailyFeedDto)
-      .where("id = :id", { id: id })
-      .execute();
-    return this.findOne(id);
+    .createQueryBuilder()
+    .update(DailyFeed)
+    .set(updateDailyFeedDto)
+    .where("id = :id", { id: id })
+    .execute();
+    return  this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {

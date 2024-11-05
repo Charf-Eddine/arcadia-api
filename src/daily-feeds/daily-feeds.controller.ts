@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException, Req } from '@nestjs/common';
 import { DailyFeedsService } from './daily-feeds.service';
 import { CreateDailyFeedDto } from './dto/create-daily-feed.dto';
 import { UpdateDailyFeedDto } from './dto/update-daily-feed.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InsertResult } from 'typeorm';
 import { DailyFeed } from './entities/daily-feed.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { jwtConstants } from 'src/auth/constants';
+import { JwtService } from '@nestjs/jwt';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags("Daily feeds")
 @Controller('daily-feeds')
 export class DailyFeedsController {
-  constructor(private readonly dailyFeedsService: DailyFeedsService) {}
+  constructor(
+    private readonly dailyFeedsService: DailyFeedsService,
+    private readonly jwtService: JwtService
+  ) {}
 
   @ApiOperation({ summary: "Créer un rapport de l'alimentation quotidienne" })
   @ApiCreatedResponse({
@@ -26,9 +34,28 @@ export class DailyFeedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })   
   @Get()
   findAll() {
-    return this.dailyFeedsService.findAll();
+    return this.dailyFeedsService.find();
   }
 
+  @ApiOperation({ summary: 'Récupérer la liste des rapports de l\'alimentation quotidienne de l\employé' })
+  @ApiOkResponse({ description: "Reports successfully retrieved.", type: [DailyFeed] })
+  @ApiInternalServerErrorResponse({ description: "Internal server error" })   
+  @Get('find-by-user')
+  async findByUser(@Req() request): Promise<DailyFeed[]> {
+    const authorizationHeader = request.headers.authorization;
+
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+      throw new UnauthorizedException("Invalid or missing Bearer token");
+    }
+    const token = authorizationHeader.split(" ")[1];
+    const decodedToken = await this.jwtService.verify(token, {
+      secret: jwtConstants.secret,
+    });
+    const userId = decodedToken.sub;
+
+    return this.dailyFeedsService.find({userId: userId});
+  }
+  
   @ApiOperation({ summary: "Récupérer un rapport de l'alimentation quotidienne par son ID" })
   @ApiOkResponse({ description: "Report successfully retrieved.", type: DailyFeed })
   @ApiBadRequestResponse({ description: "Param is wrong." })
