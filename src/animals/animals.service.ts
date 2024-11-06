@@ -73,15 +73,12 @@ export class AnimalsService {
       .leftJoinAndSelect('animal.images', 'images')
       .leftJoinAndSelect('animal.veterinaryReports', 'veterinaryReports')      
       .where("animal.id = :id", { id: id })
-      .orderBy('veterinaryReports.passageDate', 'DESC') // Tri par date décroissante pour obtenir le plus récent en premier
-      .limit(1) // Limiter à un seul résultat
+      .orderBy('veterinaryReports.passageDate', 'DESC')
       .getOne();
   }
 
   async update(id: number, updateAnimalDto: UpdateAnimalDto): Promise<Animal> {
     const animal = await this.findOne(id);
-    console.log(animal)
-    console.log("=================")
 
     if (!animal) {
       throw new Error('Animal not found');
