@@ -71,7 +71,10 @@ export class AnimalsService {
       .leftJoin('animal.habitat', 'habitat')
       .addSelect(["habitat.id", "habitat.name"])
       .leftJoinAndSelect('animal.images', 'images')
+      .leftJoinAndSelect('animal.veterinaryReports', 'veterinaryReports')      
       .where("animal.id = :id", { id: id })
+      .orderBy('veterinaryReports.passageDate', 'DESC') // Tri par date décroissante pour obtenir le plus récent en premier
+      .limit(1) // Limiter à un seul résultat
       .getOne();
   }
 
