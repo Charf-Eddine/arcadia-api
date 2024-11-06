@@ -52,7 +52,11 @@ export class HabitatsService {
       .createQueryBuilder('habitat')
       .leftJoinAndSelect('habitat.images', 'images')
       .leftJoinAndSelect('habitat.animals', 'animals')
+      .leftJoinAndSelect('animals.images', 'animalImages')
+      .leftJoinAndSelect('habitat.veterinaryReviews', 'veterinaryReviews')  
       .where("habitat.id = :id", { id: id })
+      .orderBy('veterinaryReviews.date', 'DESC') // Tri par date décroissante pour obtenir le plus récent en premier
+      .limit(1) // Limiter à un seul résultat
       .getOne();
   }
 
