@@ -6,10 +6,12 @@ import { MailerModule } from "@nestjs-modules/mailer";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { UsersService } from "src/users/users.service";
 import { DatabaseModule } from "src/database/database.module";
+import { UsersModule } from "src/users/users.module";
 
 @Module({
   imports: [
     DatabaseModule,
+    UsersModule,
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -39,6 +41,6 @@ import { DatabaseModule } from "src/database/database.module";
     }),
   ],
   controllers: [MailingController],
-  providers: [MailingService, UsersService],
+  providers: [MailingService],
 })
-export class MailingModule { }
+export class MailingModule {}
