@@ -16,6 +16,9 @@ import { MailingModule } from './mailing/mailing.module';
 import { AuthModule } from './auth/auth.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // Charger les variables d'environnement depuis le fichier .env
 
 @Module({
   imports: [
@@ -36,7 +39,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     SchedulesModule,
     MailingModule,
     AuthModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/arcadia'),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     StatisticsModule
   ],
   controllers: [],
