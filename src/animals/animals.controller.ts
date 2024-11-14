@@ -40,7 +40,7 @@ export class AnimalsController {
   }
 
   @ApiOperation({ summary: 'Récupérer la liste des animaux' })
-  @ApiOkResponse({ description: "Animals successfully retrieved.", type: [Animal] })
+  @ApiOkResponse({ description: "Animal successfully retrieved.", type: [Animal] })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Get()
   findAll(): Promise<Animal[]> {
@@ -48,7 +48,7 @@ export class AnimalsController {
   }
 
   @ApiOperation({ summary: 'Récupérer un animal par son ID' })
-  @ApiOkResponse({ description: "Service successfully retrieved.", type: Animal })
+  @ApiOkResponse({ description: "Animal successfully retrieved.", type: Animal })
   @ApiBadRequestResponse({ description: "Param is wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Get(':id')

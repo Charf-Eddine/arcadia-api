@@ -18,3 +18,4 @@ export class CreateVisitorReviewDto {
     @IsBoolean()
     isVisible!: boolean;
 }
+

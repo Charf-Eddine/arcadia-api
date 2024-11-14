@@ -5,6 +5,8 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
+import { HabitatImage } from "./habitat-image.entity";
+import { VeterinaryReview } from "src/veterinary-reviews/entities/veterinary-review.entity";
 
 @Entity({ name: "habitat" })
 export class Habitat {
@@ -19,5 +21,13 @@ export class Habitat {
 
     @OneToMany(() => Animal, (animal) => animal.habitat)
     animals: Animal[];
+
+    @OneToMany(() => VeterinaryReview, (veterinaryReview) => veterinaryReview.habitat)
+    veterinaryReviews: VeterinaryReview[];
+
+
+    @OneToMany(() => HabitatImage, (image) => image.habitat, { cascade: true })
+    images: HabitatImage[];
+
 
 }
