@@ -8,10 +8,9 @@ export class CreateHabitatDto {
     @Length(0, 50)
     name: string;
 
-    @ApiProperty({ minLength: 255, description: "Description de l'habitat" })
+    @ApiProperty({ description: "Description de l'habitat" })
     @IsNotEmpty()
     @IsString()
-    @Length(0, 255)
     description: string;
 
     @ApiProperty({ description: "Liste des images de l'habitat", type: 'array', items: { type: 'string', format: 'binary' } })
