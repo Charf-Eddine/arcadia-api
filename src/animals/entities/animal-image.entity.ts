@@ -3,16 +3,16 @@ import { Animal } from "./animal.entity";
 
 @Entity({ name: "image_animal" })
 export class AnimalImage {
-    @PrimaryGeneratedColumn({ name: "id" })
-    id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ name: "animal_id", nullable: false })
-    animalId: number;
+  @Column({ name: "animal_id", nullable: false })
+  animalId: string;
 
-    @Column({ name: 'filename', type: "varchar", length: 50, nullable: false })
-    filename: string;
+  @Column({ name: 'filename', type: "varchar", length: 50, nullable: false })
+  filename: string;
 
-    @ManyToOne(() => Animal, (animal) => animal.images)
-    @JoinColumn({ name: "animal_id" })
-    animal: Animal;
+  @ManyToOne(() => Animal, (animal) => animal.images)
+  @JoinColumn({ name: "animal_id" })
+  animal: Animal;
 }

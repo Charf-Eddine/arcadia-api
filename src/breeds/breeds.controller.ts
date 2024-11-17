@@ -38,7 +38,7 @@ export class BreedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Breed> {
-    return this.breedsService.findOne(+id);
+    return this.breedsService.findOne(id);
   }
 
   // Route pour mettre à jour une race par son ID
@@ -50,7 +50,7 @@ export class BreedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBreedDto: UpdateBreedDto): Promise<Breed> {
-    return this.breedsService.update(+id, updateBreedDto);
+    return this.breedsService.update(id, updateBreedDto);
   }
 
   // Route pour supprimer une race par son ID
@@ -59,6 +59,6 @@ export class BreedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
-    return this.breedsService.remove(+id);
+    return this.breedsService.remove(id);
   }
 }

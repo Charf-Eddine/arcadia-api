@@ -36,7 +36,7 @@ export class DailyFeedsService {
     return await qb.orderBy("dailyFeed.passageDate", "DESC").getMany();
   }
 
-  async findOne(id: number): Promise<DailyFeed> {
+  async findOne(id: string): Promise<DailyFeed> {
     return await this.dataSource
       .getRepository(DailyFeed)
       .createQueryBuilder('dailyFeed')
@@ -48,7 +48,7 @@ export class DailyFeedsService {
       .getOne();
   }
 
-  async update(id: number, updateDailyFeedDto: UpdateDailyFeedDto): Promise<DailyFeed> {
+  async update(id: string, updateDailyFeedDto: UpdateDailyFeedDto): Promise<DailyFeed> {
     await this.dataSource
     .createQueryBuilder()
     .update(DailyFeed)
@@ -58,7 +58,7 @@ export class DailyFeedsService {
     return  this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.dataSource
       .createQueryBuilder()
       .delete()

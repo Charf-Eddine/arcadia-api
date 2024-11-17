@@ -56,7 +56,7 @@ export class HabitatsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Habitat> {
-    return this.habitatsService.findOne(+id);
+    return this.habitatsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Mettre à jour un habitat par son ID' })
@@ -86,7 +86,7 @@ export class HabitatsController {
       };
     }) : [];
 
-    return this.habitatsService.update(+id, {
+    return this.habitatsService.update(id, {
       ...updateHabitatDto,
       images: imagesData.length ? imagesData : undefined,
     });
@@ -100,6 +100,6 @@ export class HabitatsController {
   @UseGuards(JwtAuthGuard) 
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
-    return this.habitatsService.remove(+id);
+    return this.habitatsService.remove(id);
   }
 }

@@ -9,15 +9,15 @@ export class BreedsService {
   constructor(
     @Inject("DATA_SOURCE")
     private dataSource: DataSource,
-  ) { }
-
+  ) {}
+    
   async create(createBreedDto: CreateBreedDto) {
     return await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(Breed)
-      .values(createBreedDto)
-      .execute();
+    .createQueryBuilder()
+    .insert()
+    .into(Breed)
+    .values(createBreedDto)
+    .execute();
   }
 
   async findAll() {
@@ -27,7 +27,7 @@ export class BreedsService {
       .getMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.dataSource
       .getRepository(Breed)
       .createQueryBuilder('breed')
@@ -35,17 +35,17 @@ export class BreedsService {
       .getOne();
   }
 
-  async update(id: number, updateBreedDto: UpdateBreedDto) {
+  async update(id: string, updateBreedDto: UpdateBreedDto) {
     await this.dataSource
-      .createQueryBuilder()
-      .update(Breed)
-      .set(updateBreedDto)
-      .where("id = :id", { id: id })
-      .execute();
-    return this.findOne(id);
+    .createQueryBuilder()
+    .update(Breed)
+    .set(updateBreedDto)
+    .where("id = :id", { id: id })
+    .execute();
+    return  this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.dataSource
       .createQueryBuilder()
       .delete()

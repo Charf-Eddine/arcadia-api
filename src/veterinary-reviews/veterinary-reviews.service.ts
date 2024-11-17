@@ -36,7 +36,7 @@ export class VeterinaryReviewsService {
       return await qb.orderBy("veterinaryReview.date", "DESC").getMany();
   }
 
-  async findOne(id: number): Promise<VeterinaryReview> {
+  async findOne(id: string): Promise<VeterinaryReview> {
     return await this.dataSource
       .getRepository(VeterinaryReview)
       .createQueryBuilder('veterinaryReview')
@@ -48,7 +48,7 @@ export class VeterinaryReviewsService {
       .getOne();
   }
 
-  async update(id: number, updateVeterinaryReviewDto: UpdateVeterinaryReviewDto): Promise<VeterinaryReview> {
+  async update(id: string, updateVeterinaryReviewDto: UpdateVeterinaryReviewDto): Promise<VeterinaryReview> {
     await this.dataSource
     .createQueryBuilder()
     .update(VeterinaryReview)
@@ -58,7 +58,7 @@ export class VeterinaryReviewsService {
     return  this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.dataSource
       .createQueryBuilder()
       .delete()

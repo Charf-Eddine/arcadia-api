@@ -43,7 +43,7 @@ export class UsersService {
     .getMany();
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     let user = await this.dataSource
       .getRepository(User)
       .createQueryBuilder('user')
@@ -65,7 +65,7 @@ export class UsersService {
       .getOne();
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password) {
       updateUserDto.password = await this.passwordService.hashPassword(updateUserDto.password);
     }
@@ -79,7 +79,7 @@ export class UsersService {
     return this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.dataSource
       .createQueryBuilder()
       .delete()

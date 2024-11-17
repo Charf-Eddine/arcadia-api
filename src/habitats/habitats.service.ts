@@ -46,7 +46,7 @@ export class HabitatsService {
       .getMany();
   }
 
-  async findOne(id: number): Promise<Habitat> {
+  async findOne(id: string): Promise<Habitat> {
     return await this.dataSource
       .getRepository(Habitat)
       .createQueryBuilder('habitat')
@@ -59,7 +59,7 @@ export class HabitatsService {
       .getOne();
   }
 
-  async update(id: number, updateHabitatDto: UpdateHabitatDto): Promise<Habitat> {
+  async update(id: string, updateHabitatDto: UpdateHabitatDto): Promise<Habitat> {
     const habitat = await this.findOne(id);
 
     if (!habitat) {
@@ -101,7 +101,7 @@ export class HabitatsService {
     return this.dataSource.getRepository(Habitat).save(habitat);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const habitat = await this.findOne(id);
     if (habitat) {
       habitat.images.forEach(image => {

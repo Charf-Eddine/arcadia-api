@@ -12,10 +12,10 @@ export type UserRoleType = "admin" | "employee" | "veterinerian"
 
 @Entity({ name: "utilisateur" })
 export class User {
-    @PrimaryGeneratedColumn({ name: "id" })
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    @Column({ name: "password", type: "varchar", length: 50, nullable: false })
+    @Column({ name: "password", type: "varchar", length: 50, nullable: true })
     password: string;
 
     @Column({ name: "nom", type: "varchar", length: 100, nullable: false })

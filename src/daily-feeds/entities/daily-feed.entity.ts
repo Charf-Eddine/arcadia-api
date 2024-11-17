@@ -4,29 +4,29 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 
 @Entity({ name: "alimentation_quotidienne" })
 export class DailyFeed {
-    @PrimaryGeneratedColumn({ name: "id" })
-    id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ name: "utilisateur_id", nullable: false })
-    userId: number;
+  @Column({ name: "utilisateur_id", nullable: false })
+  userId: string;
+  
+  @Column({ name: "animal_id", nullable: false })
+  animalId: string;
 
-    @Column({ name: "animal_id", nullable: false })
-    animalId: number;
+  @Column({ name: "date_passage", type: "datetime" })
+  passageDate: Date;
 
-    @Column({ name: "date_passage", type: "datetime" })
-    passageDate: Date;
+  @Column({ name: "nourriture", type: "varchar", length: 50, nullable: false })
+  food : string;
 
-    @Column({ name: "nourriture", type: "varchar", length: 50, nullable: false })
-    food: string;
+  @Column({ name: "grammage_nourriture", type: "float", nullable: false })
+  foodWeight : number;
 
-    @Column({ name: "grammage_nourriture", type: "float", nullable: false })
-    foodWeight: number;
+  @ManyToOne(() => Animal, (animal) => animal.dailyFeeds)
+  @JoinColumn({ name: "animal_id" })
+  animal: Animal;
 
-    @ManyToOne(() => Animal, (animal) => animal.dailyFeeds)
-    @JoinColumn({ name: "animal_id" })
-    animal: Animal;
-
-    @ManyToOne(() => User, (user) => user.dailyFeeds)
-    @JoinColumn({ name: "utilisateur_id" })
-    user: User;
+  @ManyToOne(() => User, (user) => user.dailyFeeds)
+  @JoinColumn({ name: "utilisateur_id" })
+  user: User;
 }

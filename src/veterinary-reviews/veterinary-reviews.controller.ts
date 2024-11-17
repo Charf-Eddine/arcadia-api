@@ -62,7 +62,7 @@ export class VeterinaryReviewsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get(':id')
   findOne(@Param('id') id: string): Promise<VeterinaryReview> {
-    return this.veterinaryReviewsService.findOne(+id);
+    return this.veterinaryReviewsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Mettre à jour un avis du vétérinaire par son ID' })
@@ -74,7 +74,7 @@ export class VeterinaryReviewsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVeterinaryReviewDto: UpdateVeterinaryReviewDto): Promise<VeterinaryReview> {
-    return this.veterinaryReviewsService.update(+id, updateVeterinaryReviewDto);
+    return this.veterinaryReviewsService.update(id, updateVeterinaryReviewDto);
   }
 
   @ApiOperation({ summary: 'Supprimer un avis du vétérinaire par son ID' })
@@ -83,6 +83,6 @@ export class VeterinaryReviewsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.veterinaryReviewsService.remove(+id);
+    return this.veterinaryReviewsService.remove(id);
   }
 }

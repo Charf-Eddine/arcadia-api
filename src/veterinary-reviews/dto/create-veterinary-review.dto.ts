@@ -1,18 +1,18 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateVeterinaryReviewDto {
-    @ApiProperty({ description: "ID du vétérinaire", type: 'number' })
-    @IsNumber()
+    @ApiProperty({ description: "ID du vétérinaire", type: 'string' })
+    @IsString()
     @IsNotEmpty()
-    userId: number;
-
-    @ApiProperty({ description: "ID de l'habitat", type: 'number' })
-    @IsNumber()
+    userId: string;
+    
+    @ApiProperty({ description: "ID de l'habitat", type: 'string' })
+    @IsString()
     @IsNotEmpty()
-    habitatId: number;
-
-    @ApiProperty({ description: "Date", type: 'string', format: 'date-time' })
+    habitatId: string;
+        
+    @ApiProperty({ description: "Date", type: 'string', format:'date-time' })
     @IsString()
     @IsNotEmpty()
     date: Date;
