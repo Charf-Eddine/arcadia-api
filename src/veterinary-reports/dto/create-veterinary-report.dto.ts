@@ -2,15 +2,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateVeterinaryReportDto {
-    @ApiProperty({ description: "ID du vétérinaire", type: 'number' })
-    @IsNumber()
+    @ApiProperty({ description: "ID du vétérinaire", type: 'string' })
+    @IsString()
     @IsNotEmpty()
-    userId: number;
+    userId: string;
     
-    @ApiProperty({ description: "ID de l'animal", type: 'number' })
-    @IsNumber()
+    @ApiProperty({ description: "ID de l'animal", type: 'string' })
+    @IsString()
     @IsNotEmpty()
-    animalId: number;
+    animalId: string;
         
     @ApiProperty({ description: "Date du passage", type: 'string', format:'date-time' })
     @IsString()

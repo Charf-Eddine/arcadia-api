@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -14,15 +14,25 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await this.passwordService.hashPassword(createUserDto.password);
-    createUserDto.password = hashedPassword;
-    const result = await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(User)
-      .values(createUserDto)
-      .execute();
-    return result.identifiers[0].id;
+    let existingUser = await this.findOneByEmail(createUserDto.email);
+    if (existingUser) {
+      let err: Error = {
+        name: "Erreur de création",
+        message: "Cette adresse email est déjà associée à un compte existant",
+      };
+      throw new ForbiddenException(err);
+    }
+    else {
+      const hashedPassword = await this.passwordService.hashPassword(createUserDto.password);
+      createUserDto.password = hashedPassword;
+      const result = await this.dataSource
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values(createUserDto)
+        .execute();
+      return result.identifiers[0].id;  
+    }
   }
 
   async findAll() {
@@ -33,7 +43,7 @@ export class UsersService {
     .getMany();
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     let user = await this.dataSource
       .getRepository(User)
       .createQueryBuilder('user')
@@ -55,7 +65,7 @@ export class UsersService {
       .getOne();
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password) {
       updateUserDto.password = await this.passwordService.hashPassword(updateUserDto.password);
     }
@@ -69,7 +79,7 @@ export class UsersService {
     return this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.dataSource
       .createQueryBuilder()
       .delete()

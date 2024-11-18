@@ -37,7 +37,7 @@ export class VisitorReviewsService {
       .getMany();
   }
 
-  async findOne(id: number): Promise<VisitorReview> {
+  async findOne(id: string): Promise<VisitorReview> {
     return await this.dataSource
       .getRepository(VisitorReview)
       .createQueryBuilder('visitorReview')
@@ -45,7 +45,7 @@ export class VisitorReviewsService {
       .getOne();
   }
 
-  async acceptReview(id: number) : Promise<void> {
+  async acceptReview(id: string) : Promise<void> {
     await this.dataSource
     .createQueryBuilder()
     .update(VisitorReview)
@@ -56,7 +56,7 @@ export class VisitorReviewsService {
     .execute();
   }
 
-  async rejectReview(id: number) : Promise<void> {
+  async rejectReview(id: string) : Promise<void> {
     await this.dataSource
     .createQueryBuilder()
     .update(VisitorReview)

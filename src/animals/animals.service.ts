@@ -23,25 +23,10 @@ export class AnimalsService {
       }
     }
 
-    const name = createAnimalDto.name;
-    // Convertir breedId et habitatId en nombres
-     const breedId = parseInt(createAnimalDto.breedId, 10);
-     const habitatId = parseInt(createAnimalDto.habitatId, 10);
-
-     if (isNaN(breedId) || isNaN(habitatId)) {
-         throw new Error('Invalid breedId or habitatId');
-     }
-
-     const createAnimal = {
-        name,
-        breedId,
-        habitatId
-     };
-
     const animal = this.dataSource.getRepository(Animal).create({
       name: createAnimalDto.name,
-      breedId: parseInt(createAnimalDto.breedId, 10),
-      habitatId: parseInt(createAnimalDto.habitatId, 10),
+      breedId: createAnimalDto.breedId,
+      habitatId: createAnimalDto.habitatId,
       images: filenames.map(filename => {
         return this.dataSource.getRepository(AnimalImage).create({ 
           filename: filename
@@ -63,7 +48,7 @@ export class AnimalsService {
       .getMany();
   }
 
-  async findOne(id: number): Promise<Animal> {
+  async findOne(id: string): Promise<Animal> {
     return await this.dataSource
       .getRepository(Animal)
       .createQueryBuilder('animal')
@@ -77,33 +62,15 @@ export class AnimalsService {
       .getOne();
   }
 
-  async update(id: number, updateAnimalDto: UpdateAnimalDto): Promise<Animal> {
+  async update(id: string, updateAnimalDto: UpdateAnimalDto): Promise<Animal> {
     const animal = await this.findOne(id);
 
     if (!animal) {
       throw new Error('Animal not found');
     }
-
-    delete animal.breed;
-    delete animal.habitat;
-
-    const name = updateAnimalDto.name;
-    // Convertir breedId et habitatId en nombres
-     const breedId = parseInt(updateAnimalDto.breedId, 10);
-     const habitatId = parseInt(updateAnimalDto.habitatId, 10);
-
-     if (isNaN(breedId) || isNaN(habitatId)) {
-         throw new Error('Invalid breedId or habitatId');
-     }
-
-     const updatedAnimal = {
-        name,
-        breedId,
-        habitatId
-     };
   
     // Mettre à jour les propriétés de l'animal
-    this.dataSource.getRepository(Animal).merge(animal, updatedAnimal);
+    this.dataSource.getRepository(Animal).merge(animal, updateAnimalDto);
   
     // Supprimer les anciennes images
     if (animal.images && animal.images.length > 0) {
@@ -137,7 +104,7 @@ export class AnimalsService {
     return this.dataSource.getRepository(Animal).save(animal);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const animal = await this.findOne(id);
     if (animal) {
       animal.images.forEach(image => {

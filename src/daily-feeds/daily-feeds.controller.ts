@@ -62,7 +62,7 @@ export class DailyFeedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get(':id')
   findOne(@Param('id') id: string): Promise<DailyFeed> {
-    return this.dailyFeedsService.findOne(+id);
+    return this.dailyFeedsService.findOne(id);
   }
 
   @ApiOperation({ summary: "Mettre à jour un rapport de l'alimentation quotidienne par son ID" })
@@ -74,7 +74,7 @@ export class DailyFeedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDailyFeedDto: UpdateDailyFeedDto): Promise<DailyFeed> {
-    return this.dailyFeedsService.update(+id, updateDailyFeedDto);
+    return this.dailyFeedsService.update(id, updateDailyFeedDto);
   }
 
   @ApiOperation({ summary: "Supprimer un rapport de l'alimentation quotidienne par son ID" })
@@ -83,6 +83,6 @@ export class DailyFeedsController {
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.dailyFeedsService.remove(+id);
+    return this.dailyFeedsService.remove(id);
   }
 }

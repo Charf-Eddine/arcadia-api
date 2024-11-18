@@ -8,12 +8,13 @@ import {
 
 @Entity({ name: "race" })
 export class Breed {
-    @PrimaryGeneratedColumn({ name: "id" })
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column({ name: "nom", type: "varchar", length: 50, nullable: false })
     name: string;
-
+    
     @OneToMany(() => Animal, (animal) => animal.breed)
     animals: Animal[];
 }
+  

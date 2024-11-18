@@ -47,7 +47,7 @@ export class VisitorReviewsController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<VisitorReview> {
-    return this.visitorReviewsService.findOne(+id);
+    return this.visitorReviewsService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Accepter un avis visiteur par son ID' })
@@ -61,7 +61,7 @@ export class VisitorReviewsController {
   @Post('accept-review/:id')
   @HttpCode(200)
   acceptReview(@Param('id') id: string): Promise<void> {
-    return this.visitorReviewsService.acceptReview(+id);
+    return this.visitorReviewsService.acceptReview(id);
   }
 
   @ApiOperation({ summary: 'Rejeter un avis visiteur par son ID' })
@@ -75,6 +75,6 @@ export class VisitorReviewsController {
   @Post('reject-review/:id')
   @HttpCode(200)
   rejectReview(@Param('id') id: string): Promise<void> {
-    return this.visitorReviewsService.rejectReview(+id);
+    return this.visitorReviewsService.rejectReview(id);
   }
 }

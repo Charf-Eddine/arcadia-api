@@ -7,17 +7,17 @@ import { DailyFeed } from "src/daily-feeds/entities/daily-feed.entity";
 
 @Entity({ name: "animal" })
 export class Animal {
-  @PrimaryGeneratedColumn({ name: "id" })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: "prenom", type: "varchar", length: 50, nullable: false })
   name: string;
 
   @Column({ name: "race_id", nullable: false })
-  breedId: number;
+  breedId: string;
 
   @Column({ name: "habitat_id", nullable: false })
-  habitatId: number;
+  habitatId: string;
 
   @ManyToOne(() => Breed, (breed) => breed.animals)
   @JoinColumn({ name: "race_id" })
