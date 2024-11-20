@@ -110,8 +110,8 @@ $ npm run start:prod
 ## Documentation et Utilisation des API
 
 Une fois l'application démarrée, vous pouvez consulter la documentation des API sur Swagger via l'URL suivante :
-http://localhost:3000/api
+http://localhost:3001/api
 
-**Remarque** : Remplacez le port 3000 par le port configuré dans le fichier .env.
+**Remarque** : Remplacez le port 3001 par le port configuré dans le fichier .env.
 
 Sur cette page, vous pourrez non seulement visualiser la documentation détaillée des API, groupées par module, mais également tester directement chaque endpoint en envoyant des requêtes depuis l'interface Swagger.
