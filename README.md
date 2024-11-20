@@ -1,73 +1,117 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Backend du site "Arcadia"
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Cette application est la partie backend du site "Arcadia". Elle utilise le framework [NestJS](https://nestjs.com/) et s'appuie sur MySQL et MongoDB pour la gestion des données.
 
-## Installation
+---
+
+## Prérequis
+
+Avant de commencer, assurez-vous d'avoir les prérequis suivants installés sur votre machine :
+
+- Node.js
+- MySQL
+- MongoDB (ou utilisez une instance MongoDB hébergée)
+
+## Installation et Configuration
+
+### Étape 1 : Cloner le projet
+
+Clonez le projet sur votre machine locale.
+
+### Étape 2 : Installation des dépendances
+
+- Accédez au répertoire du projet.
+- Exécutez la commande suivante pour installer les modules nécessaires :
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Étape 3 : Création de la base de données MySQL
+
+Créez une base de données pour l'application en exécutant la commande suivante dans votre terminal MySQL :
 
 ```bash
-# development
+CREATE DATABASE <nom_de_la_base>;
+```
+
+### Étape 4 : Initialisation des tables et insertion des données
+
+Importez les tables et les données depuis le fichier .sql disponible dans le dossier data :
+
+```bash
+$ mysql -u <username> -p<password> <nom_de_la_base> < ./data/arcadia.sql
+```
+
+### Étape 5 : Configuration de la base de données NoSQL MongoDB
+
+- Installez MongoDB sur votre machine ou utilisez une instance MongoDB hébergée (par exemple, MongoDB Atlas).
+- Assurez-vous d'obtenir l'URL de connexion MongoDB, qui ressemble à ceci :
+
+```bash
+mongodb://<username>:<password>@<host>:<port>/<database>
+```
+
+### Étape 6 : Configuration des variables d'environnement
+
+Créez un fichier .env à la racine du projet et configurez les variables suivantes :
+
+```bash
+# Port de l'application
+PORT=
+
+# Adresse du serveur de base de données
+DB_HOST=
+# Port du serveur MySQL (par défaut, MySQL utilise le port 3306)
+DB_PORT=
+# Nom d'utilisateur pour se connecter à la base de données
+DB_USERNAME=
+# Mot de passe pour se connecter à la base de données
+DB_PASSWORD=
+# Nom de la base de données à utiliser
+DB_NAME=
+
+# URI de connexion à la base de données MongoDB, qui contient l'adresse du serveur, le port, les informations d'authentification et le nom de la base de données à utiliser
+MONGODB_URI=
+
+# Hôte du serveur SMTP pour l'envoi des emails
+SMTP_HOST=
+# Port utilisé par le serveur SMTP
+SMTP_PORT=
+# Nom d'utilisateur pour se connecter au serveur SMTP
+SMTP_USER=
+# Mot de passe pour se connecter au serveur SMTP
+SMTP_PASS=
+
+# Adresse e-mail pour les messages "Contactez-nous"
+CONTACT_US_EMAIL=
+
+# URL de la page de connexion du site Arcadia
+LOGIN_PAGE_URL=
+```
+
+## Démarrage de l'Application
+
+Pour démarrer l'application, utilisez l'une des commandes suivantes :
+
+```bash
+# Mode développement
 $ npm run start
 
-# watch mode
+# Mode veille (watch mode)
 $ npm run start:dev
 
-# production mode
+# Mode production
 $ npm run start:prod
 ```
 
-## Test
+## Documentation et Utilisation des API
 
-```bash
-# unit tests
-$ npm run test
+Une fois l'application démarrée, vous pouvez consulter la documentation des API sur Swagger via l'URL suivante :
+http://localhost:3000/api
 
-# e2e tests
-$ npm run test:e2e
+**Remarque** : Remplacez le port 3000 par le port configuré dans le fichier .env.
 
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Sur cette page, vous pourrez non seulement visualiser la documentation détaillée des API, groupées par module, mais également tester directement chaque endpoint en envoyant des requêtes depuis l'interface Swagger.
