@@ -68,6 +68,10 @@ export class AnimalsService {
     if (!animal) {
       throw new Error('Animal not found');
     }
+
+    delete animal.breed
+    delete animal.habitat
+    delete animal.veterinaryReports    
   
     // Mettre à jour les propriétés de l'animal
     this.dataSource.getRepository(Animal).merge(animal, updateAnimalDto);
