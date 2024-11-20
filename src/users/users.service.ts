@@ -35,7 +35,7 @@ export class UsersService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return await this.dataSource
     .getRepository(User)
     .createQueryBuilder('user')
