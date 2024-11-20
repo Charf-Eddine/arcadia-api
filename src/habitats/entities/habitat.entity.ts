@@ -19,6 +19,9 @@ export class Habitat {
     @Column({ name: "description", type: "text", nullable: false })
     description: string;
     
+    @Column({ name: "date_creation", type: "datetime" })
+    dateCreation: Date;
+
     @OneToMany(() => Animal, (animal) => animal.habitat)
     animals: Animal[];
 

@@ -45,6 +45,7 @@ export class AnimalsService {
       .leftJoin('animal.habitat', 'habitat')
       .addSelect(["habitat.id", "habitat.name"])
       .leftJoinAndSelect('animal.images', 'images')
+      .orderBy('animal.dateCreation', 'DESC')
       .getMany();
   }
 

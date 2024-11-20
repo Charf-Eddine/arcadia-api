@@ -24,6 +24,7 @@ export class ServicesService {
     return await this.dataSource
       .getRepository(Service)
       .createQueryBuilder('service')
+      .orderBy('service.dateCreation', 'DESC')
       .getMany();
   }
 

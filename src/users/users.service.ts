@@ -40,6 +40,7 @@ export class UsersService {
     .getRepository(User)
     .createQueryBuilder('user')
     .select(['user.id', 'user.firstname', 'user.lastname', 'user.email', 'user.role'])
+    .orderBy('user.dateCreation', 'DESC')
     .getMany();
   }
 
