@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { MailingService } from "./mailing.service";
-import { ApiBadRequestResponse, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UserDetailsDto } from "./dto/user-details.dto";
 import { ContactUsDto } from "./dto/contact-us.dto";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
@@ -10,6 +10,7 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 export class MailingController {
     constructor(private mailingService: MailingService) {}
 
+    @ApiOperation({ summary: "Envoyer un mail de notification lors de la création d'un nouveau compte" })
     @ApiBadRequestResponse({ description: 'Body data is wrong.' })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
@@ -18,6 +19,7 @@ export class MailingController {
         return await this.mailingService.sendAccountCreationMail(userDetails);
     }
 
+    @ApiOperation({ summary: "Envoyer un mail au contact du zoo" })
     @ApiBadRequestResponse({ description: 'Body data is wrong.' })
     @Post('/contact-us')
     async contactUs(@Body() contactUsDto: ContactUsDto) {

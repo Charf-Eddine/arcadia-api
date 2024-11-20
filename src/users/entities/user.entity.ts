@@ -29,7 +29,10 @@ export class User {
 
     @Column({ name: "role", type: "enum", enum: ["admin", "employee", "veterinerian"], nullable: false })
     role: UserRoleType;
-
+    
+    @Column({ name: "date_creation", type: "datetime" })
+    dateCreation: Date;
+    
     @OneToMany(() => VeterinaryReport, (veterinaryReport) => veterinaryReport.user)
     veterinaryReports: VeterinaryReport[];
 

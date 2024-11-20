@@ -1,7 +1,7 @@
 
 import { Controller, Request, Post, UseGuards, HttpCode, Get, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LoginDto } from './dto/login.dto';
@@ -11,6 +11,7 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
     constructor(private authService: AuthService) {}
     
+    @ApiOperation({ summary: 'Se connecter' })
     @ApiOkResponse({ description: "Login successfully." })
     @ApiBadRequestResponse({ description: "Params are wrong." })
     @ApiInternalServerErrorResponse({ description: "Internal server error." })
@@ -22,6 +23,7 @@ export class AuthController {
         return this.authService.login(req.user);
     }
 
+    @ApiOperation({ summary: 'Récupérer les informations du profil utilisateur' })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get('profile')

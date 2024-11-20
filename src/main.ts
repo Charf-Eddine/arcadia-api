@@ -25,7 +25,7 @@ async function bootstrap() {
   const uploadsPath = join(__dirname, "..", "uploads");
   app.use("/uploads", express.static(uploadsPath));
 
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3001;
   await app.listen(PORT);
 }
 bootstrap();

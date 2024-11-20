@@ -18,7 +18,10 @@ export class Animal {
 
   @Column({ name: "habitat_id", nullable: false })
   habitatId: string;
-
+    
+  @Column({ name: "date_creation", type: "datetime" })
+  dateCreation: Date;
+  
   @ManyToOne(() => Breed, (breed) => breed.animals)
   @JoinColumn({ name: "race_id" })
   breed: Breed;

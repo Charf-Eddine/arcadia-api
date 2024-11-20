@@ -4,14 +4,14 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { Service } from './entities/service.entity';
 import { InsertResult } from 'typeorm';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Services")
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
-  // Route pour créer un nouveau service
+  @ApiOperation({ summary: 'Créer un nouveau service' })
   @ApiCreatedResponse({
     description: "Service successfully created.",
     type: InsertResult,
@@ -21,7 +21,7 @@ export class ServicesController {
     return this.servicesService.create(createServiceDto);
   }
 
-  // Route pour récupérer la liste des services
+  @ApiOperation({ summary: 'Récupérer la liste des services' })
   @ApiOkResponse({ description: "Services successfully retrieved.", type: [Service] })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get()
@@ -29,7 +29,7 @@ export class ServicesController {
     return this.servicesService.findAll();
   }
 
-  // Route pour récupérer un service par son ID
+  @ApiOperation({ summary: 'Récupérer un service par son ID' })
   @ApiOkResponse({ description: "Service successfully retrieved.", type: Service })
   @ApiBadRequestResponse({ description: "Param is wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
@@ -38,7 +38,7 @@ export class ServicesController {
     return this.servicesService.findOne(id);
   }
 
-  // Route pour mettre à jour un service par son ID
+  @ApiOperation({ summary: 'Mettre à jour un service par son ID' })
   @ApiCreatedResponse({
     description: "Service successfully updated.",
     type: Service,
@@ -50,7 +50,7 @@ export class ServicesController {
     return this.servicesService.update(id, updateServiceDto);
   }
 
-  // Route pour supprimer un service par son ID
+  @ApiOperation({ summary: 'Supprimer un service par son ID' })
   @ApiOkResponse({ description: "Service successfully deleted." })
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  

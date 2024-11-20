@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { BreedsService } from './breeds.service';
 import { CreateBreedDto } from './dto/create-breed.dto';
 import { UpdateBreedDto } from './dto/update-breed.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InsertResult } from 'typeorm';
 import { Breed } from './entities/breed.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -14,7 +14,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 export class BreedsController {
   constructor(private readonly breedsService: BreedsService) {}
 
-  // Route pour créer une nouvelle race
+  @ApiOperation({ summary: 'Créer une nouvelle race' })
   @ApiCreatedResponse({
     description: "Breed successfully created.",
     type: InsertResult,
@@ -24,7 +24,7 @@ export class BreedsController {
     return this.breedsService.create(createBreedDto);
   }
 
-  // Route pour récupérer la liste des races
+  @ApiOperation({ summary: 'Récupérer la liste des races' })
   @ApiOkResponse({ description: "Breeds successfully retrieved.", type: [Breed] })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
   @Get()
@@ -32,7 +32,7 @@ export class BreedsController {
     return this.breedsService.findAll();
   }
 
-  // Route pour récupérer une race par son ID
+  @ApiOperation({ summary: 'Récupérer une race par son ID' })
   @ApiOkResponse({ description: "Breed successfully retrieved.", type: Breed })
   @ApiBadRequestResponse({ description: "Param is wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  
@@ -41,7 +41,7 @@ export class BreedsController {
     return this.breedsService.findOne(id);
   }
 
-  // Route pour mettre à jour une race par son ID
+  @ApiOperation({ summary: 'Mettre à jour une race par son ID' })
   @ApiCreatedResponse({
     description: "Breed successfully updated.",
     type: Breed,
@@ -53,7 +53,7 @@ export class BreedsController {
     return this.breedsService.update(id, updateBreedDto);
   }
 
-  // Route pour supprimer une race par son ID
+  @ApiOperation({ summary: 'Supprimer une race par son ID' })
   @ApiOkResponse({ description: "Breed successfully deleted." })
   @ApiBadRequestResponse({ description: "Params are wrong." })
   @ApiInternalServerErrorResponse({ description: "Internal server error" })  

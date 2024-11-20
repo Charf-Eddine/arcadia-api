@@ -45,6 +45,7 @@ export class AnimalsService {
       .leftJoin('animal.habitat', 'habitat')
       .addSelect(["habitat.id", "habitat.name"])
       .leftJoinAndSelect('animal.images', 'images')
+      .orderBy('animal.dateCreation', 'DESC')
       .getMany();
   }
 
@@ -68,6 +69,10 @@ export class AnimalsService {
     if (!animal) {
       throw new Error('Animal not found');
     }
+
+    delete animal.breed
+    delete animal.habitat
+    delete animal.veterinaryReports    
   
     // Mettre à jour les propriétés de l'animal
     this.dataSource.getRepository(Animal).merge(animal, updateAnimalDto);
